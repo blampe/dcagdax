@@ -17,15 +17,17 @@ type gdaxSchedule struct {
 	client *exchange.Client
 	debug  bool
 
-	usd   float64
-	every time.Duration
-	until time.Time
+	usd      float64
+	every    time.Duration
+	until    time.Time
+	autoFund bool
 }
 
 func newGdaxSchedule(
 	c *exchange.Client,
 	l *zap.SugaredLogger,
 	debug bool,
+	autoFund bool,
 	usd float64,
 	every time.Duration,
 	until time.Time,
@@ -35,9 +37,10 @@ func newGdaxSchedule(
 		client: c,
 		debug:  debug,
 
-		usd:   usd,
-		every: every,
-		until: until,
+		usd:      usd,
+		every:    every,
+		until:    until,
+		autoFund: autoFund,
 	}
 
 	minimum, err := schedule.minimumUSDPurchase()
@@ -96,10 +99,16 @@ func (s *gdaxSchedule) Sync() error {
 
 		if needed > 0 {
 			s.logger.Infow(
-				"TODO: Creating a transfer request for $%.02f",
+				"Insufficient funds",
 				"needed", needed,
 			)
-			s.makeDeposit(needed)
+			if s.autoFund {
+				s.logger.Infow(
+					"TODO: Creating a transfer request for $%.02f",
+					"needed", needed,
+				)
+				s.makeDeposit(needed)
+			}
 		}
 		return nil
 	}

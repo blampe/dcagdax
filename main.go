@@ -33,6 +33,11 @@ var (
 		"trade",
 		"Actually execute trades.",
 	).Bool()
+
+	autoFund = kingpin.Flag(
+		"autofund",
+		"Automatically initiate ACH deposits.",
+	).Bool()
 )
 
 func main() {
@@ -70,6 +75,7 @@ func main() {
 		client,
 		logger,
 		!*makeTrades,
+		*autoFund,
 		*usd,
 		*every,
 		*until,
