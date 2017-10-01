@@ -67,9 +67,7 @@ func (s *gdaxSchedule) Sync() error {
 	}
 
 	if now.After(until) {
-		s.logger.Infow("Deadline has passed, not taking any action",
-			"until", until,
-		)
+		return errors.New("Deadline has passed, not taking any action")
 	}
 
 	s.logger.Infow("Dollar cost averaging",
