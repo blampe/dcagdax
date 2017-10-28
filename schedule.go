@@ -21,6 +21,7 @@ type gdaxSchedule struct {
 	every    time.Duration
 	until    time.Time
 	autoFund bool
+	coin     string
 }
 
 func newGdaxSchedule(
@@ -31,6 +32,7 @@ func newGdaxSchedule(
 	usd float64,
 	every time.Duration,
 	until time.Time,
+	coin string,
 ) (*gdaxSchedule, error) {
 	schedule := gdaxSchedule{
 		logger: l,
@@ -41,6 +43,7 @@ func newGdaxSchedule(
 		every:    every,
 		until:    until,
 		autoFund: autoFund,
+		coin: 	  coin,
 	}
 
 	minimum, err := schedule.minimumUSDPurchase()
@@ -51,8 +54,8 @@ func newGdaxSchedule(
 
 	if schedule.usd < minimum {
 		return nil, errors.New(fmt.Sprintf(
-			"GDAX's minimum BTC trade amount is $%.02f, but you're trying to purchase $%f",
-			minimum, schedule.usd,
+			"GDAX's minimum %s trade amount is $%.02f, but you're trying to purchase $%f",
+			schedule.coin, minimum, schedule.usd,
 		))
 	}
 
@@ -114,12 +117,13 @@ func (s *gdaxSchedule) Sync() error {
 	}
 
 	s.logger.Infow(
-		"Placing an order for BTC",
-		"purchaseCurrency", "USD",
+		"Placing an order for ", s.coin,
+		"purchaCurrency", "USD",
 		"purchaseAmount", s.usd,
 	)
 
-	if err := s.makePurchase(); err != nil {
+	productId := s.coin + "-" + "USD"
+	if err := s.makePurchase(productId); err != nil {
 		s.logger.Warn(err)
 	}
 
@@ -127,7 +131,8 @@ func (s *gdaxSchedule) Sync() error {
 }
 
 func (s *gdaxSchedule) minimumUSDPurchase() (float64, error) {
-	ticker, err := s.client.GetTicker("BTC-USD")
+	productId := s.coin + "-" + "USD"
+	ticker, err := s.client.GetTicker(productId)
 
 	if err != nil {
 		return 0, err
@@ -140,12 +145,12 @@ func (s *gdaxSchedule) minimumUSDPurchase() (float64, error) {
 	}
 
 	for _, p := range products {
-		if p.BaseCurrency == "BTC" {
+		if p.BaseCurrency == s.coin {
 			return p.BaseMinSize * ticker.Price, nil
 		}
 	}
 
-	return 0, errors.New("BTC-USD not found")
+	return 0, errors.New(productId + " not found")
 }
 
 func (s *gdaxSchedule) timeToPurchase() (bool, error) {
@@ -219,7 +224,7 @@ func (s *gdaxSchedule) additionalUsdNeeded() (float64, error) {
 
 func (s *gdaxSchedule) timeSinceLastPurchase() (time.Duration, error) {
 	var transactions []exchange.LedgerEntry
-	account, err := s.accountFor("BTC")
+	account, err := s.accountFor(s.coin)
 	if err != nil {
 		return 0, err
 	}
@@ -244,14 +249,14 @@ func (s *gdaxSchedule) timeSinceLastPurchase() (time.Duration, error) {
 	return now.Sub(lastTransactionTime), nil
 }
 
-func (s *gdaxSchedule) makePurchase() error {
+func (s *gdaxSchedule) makePurchase( productId string) error {
 	if s.debug {
 		return skippedForDebug
 	}
 
 	order, err := s.client.CreateOrder(
 		&exchange.Order{
-			ProductId: "BTC-USD",
+			ProductId: productId,
 			Type:      "market",
 			Side:      "buy",
 			Funds:     s.usd,

@@ -14,6 +14,11 @@ import (
 )
 
 var (
+	coin = kingpin.Flag(
+		"coin",
+		"Which coin you want to buy, BTC, LTC, ETH",
+	).Required().String()
+
 	every = registerGenerousDuration(kingpin.Flag(
 		"every",
 		"How often to make BTC purchases, e.g. 1h, 7d, 3w.",
@@ -79,6 +84,7 @@ func main() {
 		*usd,
 		*every,
 		*until,
+		*coin,
 	)
 
 	if err != nil {
