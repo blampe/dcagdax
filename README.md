@@ -84,4 +84,4 @@ as part of your deployment!
 
 **Q:** Can I buy you a beer?
 
-**A:** BTC `1DaGBQLZukeeETLoyPyZ88kbqUJTYeAmyQ`
+**A:** BTC `13N2g3MedU2mc6TzQWEE7kBoTCj6Ajyzpw`
