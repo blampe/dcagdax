@@ -16,8 +16,8 @@ import (
 var (
 	coin = kingpin.Flag(
 		"coin",
-		"Which coin you want to buy, BTC, LTC, ETH",
-	).Required().String()
+		"Which coin you want to buy, BTC, LTC, ETH, default BTC",
+	).Default("BTC").Enum("BTC", "ETH", "LTC")
 
 	every = registerGenerousDuration(kingpin.Flag(
 		"every",

@@ -43,7 +43,7 @@ func newGdaxSchedule(
 		every:    every,
 		until:    until,
 		autoFund: autoFund,
-		coin: 	  coin,
+		coin:     coin,
 	}
 
 	minimum, err := schedule.minimumUSDPurchase()
@@ -118,7 +118,7 @@ func (s *gdaxSchedule) Sync() error {
 
 	s.logger.Infow(
 		"Placing an order for ", s.coin,
-		"purchaCurrency", "USD",
+		"purchaseCurrency", "USD",
 		"purchaseAmount", s.usd,
 	)
 
@@ -249,7 +249,7 @@ func (s *gdaxSchedule) timeSinceLastPurchase() (time.Duration, error) {
 	return now.Sub(lastTransactionTime), nil
 }
 
-func (s *gdaxSchedule) makePurchase( productId string) error {
+func (s *gdaxSchedule) makePurchase(productId string) error {
 	if s.debug {
 		return skippedForDebug
 	}
