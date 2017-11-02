@@ -239,8 +239,9 @@ func (s *gdaxSchedule) timeSinceLastPurchase() (time.Duration, error) {
 
 		}
 
+		// Consider trade transactions
 		for _, t := range transactions {
-			if t.CreatedAt.Time().After(lastTransactionTime) {
+			if t.CreatedAt.Time().After(lastTransactionTime) && t.Type == "match" {
 				lastTransactionTime = t.CreatedAt.Time()
 			}
 		}
