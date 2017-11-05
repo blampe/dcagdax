@@ -1,6 +1,6 @@
 # DCA GDAX
 
-Automated dollar cost averaging for BTC, LTC, ETH on GDAX.
+Automated dollar cost averaging for BTC, LTC, and ETH on GDAX.
 
 ## Setup
 
@@ -28,13 +28,13 @@ $ go build ./
 
 ```
 ./dcagdax --help
-usage: dcagdax --coin=COIN --every=EVERY --usd=USD [<flags>]
+usage: dcagdax --every=EVERY --usd=USD [<flags>]
 
 Flags:
   --help         Show context-sensitive help (also try --help-long and --help-man).
-  --coin=COIN    Which coin you want to buy, BTC, LTC, ETH
-  --every=EVERY  How often to make COIN purchases, e.g. 1h, 7d, 3w.
-  --usd=USD      How much USD to spend on each COIN purchase.
+  --coin=BTC     Which coin you want to buy: BTC, LTC, or ETH (default 'BTC').
+  --every=EVERY  How often to make purchases, e.g. 1h, 7d, 3w.
+  --usd=USD      How much USD to spend on each purchase.
   --until=UNTIL  Stop executing trades after this date, e.g. 2017-12-31.
   --trade        Actually execute trades.
   --autofund     Automatically initiate ACH deposits.
@@ -78,9 +78,9 @@ as part of your deployment!
 
 **A:** Not currently, but pull requests are welcome!
 
-**Q:** Which Coins can I purchase?
+**Q:** Which coins can I purchase?
 
-**A:** Currently we support BTC, LTC, ETH ( as supported by GDAX )
+**A:** We support all of GDAX's products: BTC, LTC, and ETH.
 
 **Q:** Can I buy you a beer?
 

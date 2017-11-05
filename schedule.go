@@ -117,7 +117,8 @@ func (s *gdaxSchedule) Sync() error {
 	}
 
 	s.logger.Infow(
-		"Placing an order for ", s.coin,
+		"Placing an order",
+		"coin", s.coin,
 		"purchaseCurrency", "USD",
 		"purchaseAmount", s.usd,
 	)
