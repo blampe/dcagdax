@@ -28,13 +28,15 @@ $ go build ./
 
 ```
 ./dcagdax --help
-usage: dcagdax --every=EVERY --usd=USD [<flags>]
+usage: dcagdax --every=EVERY [<flags>]
 
 Flags:
-  --help         Show context-sensitive help (also try --help-long and --help-man).
+  --help         Show context-sensitive help (also try --help-long and
+                 --help-man).
   --coin=BTC     Which coin you want to buy: BTC, LTC, or ETH (default 'BTC').
   --every=EVERY  How often to make purchases, e.g. 1h, 7d, 3w.
-  --usd=USD      How much USD to spend on each purchase.
+  --usd=USD      How much USD to spend on each purchase. If unspecified, the
+                 minimum purchase amount allowed will be used.
   --until=UNTIL  Stop executing trades after this date, e.g. 2017-12-31.
   --trade        Actually execute trades.
   --autofund     Automatically initiate ACH deposits.

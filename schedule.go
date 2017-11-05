@@ -52,6 +52,10 @@ func newGdaxSchedule(
 		return nil, err
 	}
 
+	if schedule.usd == 0.0 {
+		schedule.usd = minimum + 0.1
+	}
+
 	if schedule.usd < minimum {
 		return nil, errors.New(fmt.Sprintf(
 			"GDAX's minimum %s trade amount is $%.02f, but you're trying to purchase $%f",
