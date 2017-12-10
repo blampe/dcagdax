@@ -63,7 +63,15 @@ func newGdaxSchedule(
 		))
 	}
 
+	// GDAX has a limit of 8 decimal places.
+	schedule.usd = roundFloat(schedule.usd, 8)
+
 	return &schedule, nil
+}
+
+func roundFloat(f float64, places int) (float64) {
+    shift := math.Pow(10, float64(places))
+    return math.Floor(f * shift + .5) / shift;
 }
 
 // Sync initiates trades & funding with a DCA strategy.
