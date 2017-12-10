@@ -159,7 +159,7 @@ func (s *gdaxSchedule) minimumUSDPurchase() (float64, error) {
 
 	for _, p := range products {
 		if p.BaseCurrency == s.coin {
-			return p.BaseMinSize * ticker.Price, nil
+			return math.Max(p.BaseMinSize * ticker.Price, 1.0), nil
 		}
 	}
 
