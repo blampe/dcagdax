@@ -26,8 +26,8 @@ var (
 
 	usd = kingpin.Flag(
 		"usd",
-		"How much USD to spend on each purchase.",
-	).Required().Float()
+		"How much USD to spend on each purchase. If unspecified, the minimum purchase amount allowed will be used.",
+	).Float()
 
 	until = registerDate(kingpin.Flag(
 		"until",

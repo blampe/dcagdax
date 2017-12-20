@@ -52,6 +52,10 @@ func newGdaxSchedule(
 		return nil, err
 	}
 
+	if schedule.usd == 0.0 {
+		schedule.usd = minimum + 0.1
+	}
+
 	if schedule.usd < minimum {
 		return nil, errors.New(fmt.Sprintf(
 			"GDAX's minimum %s trade amount is $%.02f, but you're trying to purchase $%f",
@@ -59,7 +63,15 @@ func newGdaxSchedule(
 		))
 	}
 
+	// GDAX has a limit of 8 decimal places.
+	schedule.usd = roundFloat(schedule.usd, 8)
+
 	return &schedule, nil
+}
+
+func roundFloat(f float64, places int) (float64) {
+    shift := math.Pow(10, float64(places))
+    return math.Floor(f * shift + .5) / shift;
 }
 
 // Sync initiates trades & funding with a DCA strategy.
@@ -147,7 +159,7 @@ func (s *gdaxSchedule) minimumUSDPurchase() (float64, error) {
 
 	for _, p := range products {
 		if p.BaseCurrency == s.coin {
-			return p.BaseMinSize * ticker.Price, nil
+			return math.Max(p.BaseMinSize * ticker.Price, 1.0), nil
 		}
 	}
 
