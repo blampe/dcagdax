@@ -12,19 +12,15 @@ Procure a GDAX API key for yourself by visiting
 [www.gdax.com/settings/api](https://www.gdax.com/settings/api). **Do not share
 this API key with third parties!**
 
-Install dependencies with [glide](https://github.com/Masterminds/glide):
+## Usage
 
-```
-$ glide i
-```
-
-You should now be able to build the binary without seeing any errors:
+Build the binary:
 
 ```
 $ go build ./
 ```
 
-## Usage
+Then run it:
 
 ```
 ./dcagdax --help

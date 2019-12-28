@@ -1,8 +1,0 @@
-package: github.com/blampe/dcagdax
-import:
-- package: github.com/blampe/go-coinbase-exchange
-  branch: transfers
-- package: gopkg.in/alecthomas/kingpin.v2
-  version: ^2.2.5
-- package: go.uber.org/zap
-  version: ^1.6.0
